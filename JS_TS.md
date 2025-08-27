@@ -16,6 +16,8 @@
     - [Additional TypeScript Steps](#additional-typescript-steps)
   - [Next.js Setup](#nextjs-setup)
     - [Additional Next.js Steps](#additional-nextjs-steps)
+  - [Vite Setup](#vite-setup)
+    - [Additional Vite Steps](#additional-vite-steps)
   - [Scripts](#scripts)
   - [Usage](#usage)
   - [Example Project Structure](#example-project-structure)
@@ -146,6 +148,7 @@ Husky automates pre-commit and pre-push checks, ensuring that only code passing 
 
 ---
 
+
 ## TypeScript Setup
 
 If you are using **TypeScript**, follow this section after the JavaScript setup:
@@ -217,6 +220,51 @@ If you are using **Next.js** (with TypeScript or JavaScript), follow this sectio
     ];
     ```
 3. Make sure you have a `tsconfig.json` in your project root.
+
+---
+
+## Vite Setup
+
+If you are using **Vite** (with React, TypeScript, or JavaScript), follow this section after the TypeScript setup:
+
+### Additional Vite Steps
+
+For most Vite projects, the setup is nearly identical to a standard React or TypeScript project. The only difference is you may want to add the React plugin for Vite+React projects:
+
+1. Install required packages:
+    ```bash
+    npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-import typescript
+    ```
+2. Use a Flat Config for Vite+React in your `eslint.config.js`:
+    ```js
+    import js from '@eslint/js';
+    import tseslint from 'typescript-eslint';
+    import reactPlugin from 'eslint-plugin-react';
+    import reactHooksPlugin from 'eslint-plugin-react-hooks';
+    import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+    import importPlugin from 'eslint-plugin-import';
+
+    export default [
+       js.configs.recommended,
+       tseslint.configs.recommended,
+       {
+          plugins: {
+             react: reactPlugin,
+             'react-hooks': reactHooksPlugin,
+             'jsx-a11y': jsxA11yPlugin,
+             import: importPlugin,
+          },
+       },
+       {
+          rules: {
+             // Add more rules as needed
+          },
+       },
+    ];
+    ```
+3. Make sure you have a `tsconfig.json` in your project root (if using TypeScript).
+
+**Note:** Vite itself does not require any special ESLint configuration. If you use React, include the React plugins. For Vue or other frameworks, use their respective ESLint plugins.
 
 ---
 

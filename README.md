@@ -7,11 +7,18 @@
 
 # CSES Linters, Formatters, and Git Hooks
 
-This repository provides best-practice templates for setting up code quality tools in JavaScript and TypeScript projects. It includes:
+
+This repository provides best-practice templates for setting up code quality tools in JavaScript, TypeScript, Next.js, and Vite projects. It includes:
 
 - ESLint (Flat Config)
 - Prettier
 - Husky (Git hooks)
+
+The guide covers:
+- Plain JavaScript
+- TypeScript
+- Next.js (React framework)
+- Vite (modern frontend tooling)
 
 For a full guide and setup instructions, see [JS_TS.md](./JS_TS.md).
 
