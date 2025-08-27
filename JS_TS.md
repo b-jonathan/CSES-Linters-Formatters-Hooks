@@ -1,6 +1,7 @@
 # JavaScript/TypeScript
 
 
+
 ## Table of Contents
 - [JavaScript/TypeScript](#javascripttypescript)
   - [Table of Contents](#table-of-contents)
@@ -12,6 +13,7 @@
       - [`.eslintignore`](#eslintignore)
       - [`.prettierignore`](#prettierignore)
     - [Husky Git Hooks](#husky-git-hooks)
+      - [Example Husky Pre-commit Hook (Interactive Lint-Fix)](#example-husky-pre-commit-hook-interactive-lint-fix)
   - [TypeScript Setup](#typescript-setup)
     - [Additional TypeScript Steps](#additional-typescript-steps)
   - [Next.js Setup](#nextjs-setup)
@@ -23,11 +25,6 @@
   - [Example Project Structure](#example-project-structure)
     - [1. Pure Monorepo (single app)](#1-pure-monorepo-single-app)
     - [2. Split Frontend/Backend](#2-split-frontendbackend)
-  - [Example Husky Pre-commit Hook (Interactive Lint-Fix)](#example-husky-pre-commit-hook-interactive-lint-fix)
-    - [Adapting for JavaScript vs TypeScript](#adapting-for-javascript-vs-typescript)
-  - [Next.js Projects](#nextjs-projects)
-    - [Setup](#setup)
-    - [Notes](#notes)
   - [Resources](#resources)
 
 ---
@@ -147,6 +144,28 @@ Husky automates pre-commit and pre-push checks, ensuring that only code passing 
     ```
 
 ---
+
+#### Example Husky Pre-commit Hook (Interactive Lint-Fix)
+
+You can make your `.husky/pre-commit` script interactive, so if lint errors are found, it offers to run `lint-fix` automatically and asks you to recommit once fixed. Example (bash):
+
+```bash
+npm run lint-check
+if [ $? -ne 0 ]; then
+   echo "Lint errors detected. Would you like to run lint-fix automatically? (y/n)"
+   read answer
+   if [ "$answer" = "y" ]; then
+      npm run lint-fix
+      echo "If all errors are fixed, please recommit your changes."
+      exit 1
+   else
+      echo "Commit aborted due to lint errors."
+      exit 1
+   fi
+fi
+```
+
+This ensures you never commit code with lint errors, and gives you a quick way to fix and recommit.
 
 
 ## TypeScript Setup
@@ -343,108 +362,6 @@ my-app/
 ├── package.json (optionally, for root scripts or dependencies)
 └── ...
 ```
-
----
-
-## Example Husky Pre-commit Hook (Interactive Lint-Fix)
-
-You can make your `.husky/pre-commit` script interactive, so if lint errors are found, it offers to run `lint-fix` automatically and asks you to recommit once fixed. Example (bash):
-
-```bash
-npm run lint-check
-if [ $? -ne 0 ]; then
-   echo "Lint errors detected. Would you like to run lint-fix automatically? (y/n)"
-   read answer
-   if [ "$answer" = "y" ]; then
-      npm run lint-fix
-      echo "If all errors are fixed, please recommit your changes."
-      exit 1
-   else
-      echo "Commit aborted due to lint errors."
-      exit 1
-   fi
-fi
-```
-
-This ensures you never commit code with lint errors, and gives you a quick way to fix and recommit.
-
-### Adapting for JavaScript vs TypeScript
-
-- **JavaScript:** Use the setup above as-is.
-- **TypeScript:**
-   - Install additional packages:
-      ```bash
-      npm install --save-dev typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
-      ```
-   - Update your `eslint.config.js` to include TypeScript support. Example:
-      ```js
-      import js from '@eslint/js';
-      import tseslint from 'typescript-eslint';
-
-      export default [
-         js.configs.recommended,
-         tseslint.configs.recommended,
-         {
-            rules: {
-               'semi': ['error', 'always'],
-               'quotes': ['error', 'single'],
-            },
-         },
-      ];
-      ```
-   - Make sure you have a `tsconfig.json` in your project root.
-
----
-
-
----
-
-## Next.js Projects
-
-Next.js projects benefit from additional ESLint plugins and rules for React, accessibility, and Next.js best practices.
-
-### Setup
-
-1. Install required packages:
-    ```bash
-    npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react-refresh @next/eslint-plugin-next typescript
-    ```
-2. Use a Flat Config for Next.js in your `eslint.config.js`:
-    ```js
-    import js from '@eslint/js';
-    import tseslint from 'typescript-eslint';
-    import reactPlugin from 'eslint-plugin-react';
-    import reactHooksPlugin from 'eslint-plugin-react-hooks';
-    import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
-    import importPlugin from 'eslint-plugin-import';
-    import nextPlugin from '@next/eslint-plugin-next';
-
-    export default [
-       js.configs.recommended,
-       tseslint.configs.recommended,
-       nextPlugin.configs.recommended,
-       {
-          plugins: {
-             react: reactPlugin,
-             'react-hooks': reactHooksPlugin,
-             'jsx-a11y': jsxA11yPlugin,
-             import: importPlugin,
-          },
-       },
-       {
-          rules: {
-             'react/react-in-jsx-scope': 'off', // Not needed in Next.js
-             // Add more rules as needed
-          },
-       },
-    ];
-    ```
-3. Make sure you have a `tsconfig.json` in your project root.
-
-### Notes
-- The `@next/eslint-plugin-next` plugin enforces Next.js and React best practices.
-- You may want to add or adjust rules for your team’s style and needs.
-- For more advanced setups, see the [Next.js ESLint docs](https://nextjs.org/docs/pages/building-your-application/configuring/eslint).
 
 ---
 
