@@ -1,7 +1,7 @@
-# Linters, Formatters, and Git Hooks for JavaScript/TypeScript
+# JavaScript/TypeScript
 
 ## Table of Contents
-- [Linters, Formatters, and Git Hooks for JavaScript/TypeScript](#linters-formatters-and-git-hooks-for-javascripttypescript)
+- [JavaScript/TypeScript](#javascripttypescript)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Initial Setup](#initial-setup)
@@ -14,6 +14,9 @@
   - [Scripts](#scripts)
   - [Usage](#usage)
   - [Example Project Structure](#example-project-structure)
+    - [1. Pure Monorepo (single app)](#1-pure-monorepo-single-app)
+    - [2. Split Frontend/Backend](#2-split-frontendbackend)
+  - [Example Husky Pre-commit Hook (Interactive Lint-Fix)](#example-husky-pre-commit-hook-interactive-lint-fix)
     - [Adapting for JavaScript vs TypeScript](#adapting-for-javascript-vs-typescript)
   - [Resources](#resources)
 
@@ -74,10 +77,12 @@ Prettier automatically formats your code, ensuring a consistent style across you
    ```
 2. Create `.prettierrc`:
    ```json
-   {
-     "semi": true,
-     "singleQuote": true
-   }
+    {
+    "tabWidth": 2,
+    "semi": true,
+    "singleQuote": false,
+    "trailingComma": "all",
+    }
    ```
 
 ### Ignore Files
@@ -155,10 +160,12 @@ Add these scripts to your `package.json` for easy linting and formatting:
 
 ---
 
+
 ## Example Project Structure
 
-After following this guide, your project might look like:
+After following this guide, your project might look like one of the following:
 
+### 1. Pure Monorepo (single app)
 ```
 my-app/
 ├── node_modules/
@@ -173,6 +180,58 @@ my-app/
 │   └── pre-commit
 └── ...
 ```
+
+### 2. Split Frontend/Backend
+```
+my-app/
+├── node_modules/
+├── frontend/
+│   ├── src/
+│   │   └── ...
+│   ├── .eslintignore
+│   ├── .prettierignore
+│   ├── .prettierrc
+│   ├── eslint.config.js
+│   ├── package.json
+│   └── tsconfig.json (if using TypeScript)
+├── backend/
+│   ├── src/
+│   │   └── ...
+│   ├── .eslintignore
+│   ├── .prettierignore
+│   ├── .prettierrc
+│   ├── eslint.config.js
+│   ├── package.json
+│   └── tsconfig.json (if using TypeScript)
+├── .husky/
+│   └── pre-commit
+├── package.json (optionally, for root scripts or dependencies)
+└── ...
+```
+
+---
+
+## Example Husky Pre-commit Hook (Interactive Lint-Fix)
+
+You can make your `.husky/pre-commit` script interactive, so if lint errors are found, it offers to run `lint-fix` automatically and asks you to recommit once fixed. Example (bash):
+
+```bash
+npm run lint-check
+if [ $? -ne 0 ]; then
+   echo "Lint errors detected. Would you like to run lint-fix automatically? (y/n)"
+   read answer
+   if [ "$answer" = "y" ]; then
+      npm run lint-fix
+      echo "If all errors are fixed, please recommit your changes."
+      exit 1
+   else
+      echo "Commit aborted due to lint errors."
+      exit 1
+   fi
+fi
+```
+
+This ensures you never commit code with lint errors, and gives you a quick way to fix and recommit.
 
 ### Adapting for JavaScript vs TypeScript
 

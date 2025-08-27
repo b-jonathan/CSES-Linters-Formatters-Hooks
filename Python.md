@@ -1,7 +1,7 @@
-# Linters, Formatters, and Git Hooks for Python
+# Python
 
 ## Table of Contents
-- [Linters, Formatters, and Git Hooks for Python](#linters-formatters-and-git-hooks-for-python)
+- [Python](#python)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
   - [Initial Setup](#initial-setup)
