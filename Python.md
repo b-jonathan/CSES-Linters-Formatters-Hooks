@@ -1,19 +1,16 @@
 # Python
 
+
 ## Table of Contents
-- [Python](#python)
-  - [Table of Contents](#table-of-contents)
-  - [Introduction](#introduction)
-  - [Initial Setup](#initial-setup)
-    - [Flake8](#flake8)
-    - [Black](#black)
-    - [Ignore Files](#ignore-files)
-      - [`.gitignore`](#gitignore)
-      - [`.flake8` (exclude section)](#flake8-exclude-section)
-    - [Pre-commit Git Hooks](#pre-commit-git-hooks)
-  - [Scripts](#scripts)
-  - [Usage](#usage)
-  - [Resources](#resources)
+- [Introduction](#introduction)
+- [Initial Setup](#initial-setup)
+   - [Flake8](#flake8)
+   - [Black](#black)
+   - [Ignore Files](#ignore-files)
+   - [Pre-commit Git Hooks](#pre-commit-git-hooks)
+- [Scripts](#scripts)
+- [Usage](#usage)
+- [Resources](#resources)
 
 ---
 

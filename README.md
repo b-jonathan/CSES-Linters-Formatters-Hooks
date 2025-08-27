@@ -1,9 +1,9 @@
 # Linters, Formatters, and Git Hooks
 
+
 ## Table of Contents
-- [Linters, Formatters, and Git Hooks](#linters-formatters-and-git-hooks)
-  - [Table of Contents](#table-of-contents)
-- [CSES Linters, Formatters, and Git Hooks](#cses-linters-formatters-and-git-hooks)
+- [About](#cses-linters-formatters-and-git-hooks)
+- [JavaScript/TypeScript Guide](./JS_TS.md)
 
 # CSES Linters, Formatters, and Git Hooks
 

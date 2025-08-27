@@ -1,16 +1,21 @@
 # JavaScript/TypeScript
 
+
 ## Table of Contents
 - [JavaScript/TypeScript](#javascripttypescript)
   - [Table of Contents](#table-of-contents)
   - [Introduction](#introduction)
-  - [Initial Setup](#initial-setup)
+  - [JavaScript Only Setup](#javascript-only-setup)
     - [ESLint (Flat Config)](#eslint-flat-config)
     - [Prettier](#prettier)
     - [Ignore Files](#ignore-files)
       - [`.eslintignore`](#eslintignore)
       - [`.prettierignore`](#prettierignore)
     - [Husky Git Hooks](#husky-git-hooks)
+  - [TypeScript Setup](#typescript-setup)
+    - [Additional TypeScript Steps](#additional-typescript-steps)
+  - [Next.js Setup](#nextjs-setup)
+    - [Additional Next.js Steps](#additional-nextjs-steps)
   - [Scripts](#scripts)
   - [Usage](#usage)
   - [Example Project Structure](#example-project-structure)
@@ -18,6 +23,9 @@
     - [2. Split Frontend/Backend](#2-split-frontendbackend)
   - [Example Husky Pre-commit Hook (Interactive Lint-Fix)](#example-husky-pre-commit-hook-interactive-lint-fix)
     - [Adapting for JavaScript vs TypeScript](#adapting-for-javascript-vs-typescript)
+  - [Next.js Projects](#nextjs-projects)
+    - [Setup](#setup)
+    - [Notes](#notes)
   - [Resources](#resources)
 
 ---
@@ -33,7 +41,12 @@ These tools help teams focus on building features, not debating style or fixing 
 
 ---
 
-## Initial Setup
+
+---
+
+## JavaScript Only Setup
+
+If you are using **plain JavaScript**, follow this section and stop here:
 
 ### ESLint (Flat Config)
 
@@ -41,30 +54,30 @@ These tools help teams focus on building features, not debating style or fixing 
 ESLint analyzes your code for errors, anti-patterns, and style issues. It helps catch bugs early and enforces standards, making your codebase more reliable and easier to maintain.
 
 1. Install ESLint:
-   ```bash
-   npm install --save-dev eslint
-   ```
+    ```bash
+    npm install --save-dev eslint
+    ```
 2. Create `eslint.config.js` in your project root:
-   ```js
-   // eslint.config.js
-   import js from '@eslint/js';
+    ```js
+    // eslint.config.js
+    import js from '@eslint/js';
 
-   export default [
-     js.configs.recommended,
-     {
-       rules: {
-         'semi': ['error', 'always'],
-         'quotes': ['error', 'single'],
+    export default [
+       js.configs.recommended,
+       {
+          rules: {
+             'semi': ['error', 'always'],
+             'quotes': ['error', 'single'],
+          },
        },
-     },
-   ];
-   ```
-   > If using ES modules, add `"type": "module"` to your `package.json`.
+    ];
+    ```
+    > If using ES modules, add `"type": "module"` to your `package.json`.
 
 3. Run ESLint:
-   ```bash
-   npx eslint . --config eslint.config.js
-   ```
+    ```bash
+    npx eslint . --config eslint.config.js
+    ```
 
 ### Prettier
 
@@ -72,18 +85,18 @@ ESLint analyzes your code for errors, anti-patterns, and style issues. It helps 
 Prettier automatically formats your code, ensuring a consistent style across your team. This reduces time spent on formatting debates and makes code reviews more focused on logic.
 
 1. Install Prettier:
-   ```bash
-   npm install --save-dev prettier
-   ```
+    ```bash
+    npm install --save-dev prettier
+    ```
 2. Create `.prettierrc`:
-   ```json
-    {
-    "tabWidth": 2,
-    "semi": true,
-    "singleQuote": false,
-    "trailingComma": "all",
-    }
-   ```
+    ```json
+      {
+      "tabWidth": 2,
+      "semi": true,
+      "singleQuote": false,
+      "trailingComma": "all"
+      }
+    ```
 
 ### Ignore Files
 
@@ -116,20 +129,94 @@ coverage/
 Husky automates pre-commit and pre-push checks, ensuring that only code passing lint and format checks makes it into your repository. This protects your main branch from preventable errors and enforces team standards automatically.
 
 1. Install Husky:
-   ```bash
-   npm install --save-dev husky
-   npx husky init
-   ```
+    ```bash
+    npm install --save-dev husky
+    npx husky init
+    ```
 2. Add to `package.json` scripts:
-   ```json
-   "scripts": {
-     "prepare": "husky init"
-   }
-   ```
+    ```json
+    "scripts": {
+       "prepare": "husky init"
+    }
+    ```
 3. Add a pre-commit hook:
-   ```bash
-   npx husky add .husky/pre-commit "npm run lint-check"
-   ```
+    ```bash
+    npx husky add .husky/pre-commit "npm run lint-check"
+    ```
+
+---
+
+## TypeScript Setup
+
+If you are using **TypeScript**, follow this section after the JavaScript setup:
+
+### Additional TypeScript Steps
+
+1. Install TypeScript and ESLint plugins:
+    ```bash
+    npm install --save-dev typescript @typescript-eslint/parser @typescript-eslint/eslint-plugin
+    ```
+2. Update your `eslint.config.js` to include TypeScript support:
+    ```js
+    import js from '@eslint/js';
+    import tseslint from 'typescript-eslint';
+
+    export default [
+       js.configs.recommended,
+       tseslint.configs.recommended,
+       {
+          rules: {
+             'semi': ['error', 'always'],
+             'quotes': ['error', 'single'],
+          },
+       },
+    ];
+    ```
+3. Make sure you have a `tsconfig.json` in your project root.
+
+---
+
+## Next.js Setup
+
+If you are using **Next.js** (with TypeScript or JavaScript), follow this section after the TypeScript setup:
+
+### Additional Next.js Steps
+
+1. Install required packages:
+    ```bash
+    npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react-refresh @next/eslint-plugin-next typescript
+    ```
+2. Use a Flat Config for Next.js in your `eslint.config.js`:
+    ```js
+    import js from '@eslint/js';
+    import tseslint from 'typescript-eslint';
+    import reactPlugin from 'eslint-plugin-react';
+    import reactHooksPlugin from 'eslint-plugin-react-hooks';
+    import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+    import importPlugin from 'eslint-plugin-import';
+    import nextPlugin from '@next/eslint-plugin-next';
+
+    export default [
+       js.configs.recommended,
+       tseslint.configs.recommended,
+       nextPlugin.configs.recommended,
+       {
+          plugins: {
+             react: reactPlugin,
+             'react-hooks': reactHooksPlugin,
+             'jsx-a11y': jsxA11yPlugin,
+             import: importPlugin,
+          },
+       },
+       {
+          rules: {
+             'react/react-in-jsx-scope': 'off', // Not needed in Next.js
+             // Add more rules as needed
+          },
+       },
+    ];
+    ```
+3. Make sure you have a `tsconfig.json` in your project root.
 
 ---
 
@@ -261,9 +348,62 @@ This ensures you never commit code with lint errors, and gives you a quick way t
 
 ---
 
+
+---
+
+## Next.js Projects
+
+Next.js projects benefit from additional ESLint plugins and rules for React, accessibility, and Next.js best practices.
+
+### Setup
+
+1. Install required packages:
+    ```bash
+    npm install --save-dev eslint @typescript-eslint/parser @typescript-eslint/eslint-plugin eslint-plugin-react eslint-plugin-react-hooks eslint-plugin-jsx-a11y eslint-plugin-import eslint-plugin-react-refresh @next/eslint-plugin-next typescript
+    ```
+2. Use a Flat Config for Next.js in your `eslint.config.js`:
+    ```js
+    import js from '@eslint/js';
+    import tseslint from 'typescript-eslint';
+    import reactPlugin from 'eslint-plugin-react';
+    import reactHooksPlugin from 'eslint-plugin-react-hooks';
+    import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+    import importPlugin from 'eslint-plugin-import';
+    import nextPlugin from '@next/eslint-plugin-next';
+
+    export default [
+       js.configs.recommended,
+       tseslint.configs.recommended,
+       nextPlugin.configs.recommended,
+       {
+          plugins: {
+             react: reactPlugin,
+             'react-hooks': reactHooksPlugin,
+             'jsx-a11y': jsxA11yPlugin,
+             import: importPlugin,
+          },
+       },
+       {
+          rules: {
+             'react/react-in-jsx-scope': 'off', // Not needed in Next.js
+             // Add more rules as needed
+          },
+       },
+    ];
+    ```
+3. Make sure you have a `tsconfig.json` in your project root.
+
+### Notes
+- The `@next/eslint-plugin-next` plugin enforces Next.js and React best practices.
+- You may want to add or adjust rules for your team’s style and needs.
+- For more advanced setups, see the [Next.js ESLint docs](https://nextjs.org/docs/pages/building-your-application/configuring/eslint).
+
+---
+
 ## Resources
 
 - [ESLint Flat Config Guide](https://eslint.org/docs/latest/use/configure/configuration-files-new)
 - [TypeScript ESLint Docs](https://typescript-eslint.io/)
 - [Prettier Docs](https://prettier.io/docs/en/index.html)
 - [Husky Docs](https://typicode.github.io/husky/#/)
+- [Next.js ESLint Docs](https://nextjs.org/docs/pages/building-your-application/configuring/eslint)
